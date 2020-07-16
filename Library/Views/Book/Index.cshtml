@@ -1,0 +1,17 @@
+﻿@model IEnumerable<Library.Data.Model.Book>
+<div>
+    This Page Displays List of All Books Submitted By User...
+</div>
+<div> @Html.DisplayNameFor(Model => Model.Name) </div>
+
+
+@foreach (var item in Model)
+
+{
+    <div> @item.Name  </div>
+    <div> @item.Language </div>
+    <div> @item.WeekDays </div>
+}
+<div>
+    @Html.ActionLink("Create Book", "Create")
+</div>

@@ -1,0 +1,73 @@
+﻿@model Library.Data.Model.Book
+<div>
+    This is a Book Name Submit Form.
+</div>
+<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+<script language="javascript"  type="text/javascript">
+    function GetCity(_stateid) {
+        var processMessage = "<option value='0'> ...Please wait...  </option>";
+            $("#ddlcity").html(processMessage).show();
+            var url = "/Book/GetCityByState/";
+
+            $.ajax({
+                url: url,
+                data: { stateid: _stateid },
+                cache: false,
+                type: "POST",
+                success: function (data) {
+                    var markup = "<option value='0'> --Select City-- </option>";
+                    for (var i = 0; i < data.length; i++) {
+                        markup += "<option value="+ data[i].value + ">" + data[i].Text + "</option>"
+                    }
+                    $("#ddlcity").html(markup).show();
+                },
+                error: function (response) {
+                    alert("error:" + response );
+                }
+            });
+        }
+
+    </script>
+
+<div>
+    @using (Html.BeginForm())
+    {
+        @Html.AntiForgeryToken() <table>
+            <tr>
+                <td>
+                    @Html.LabelFor(m => m.Name, "Enter your name:")
+
+                </td>
+                <td>
+                    @Html.TextBoxFor(m => m.Name)
+                </td>
+                <td>
+                    @Html.EnumDropDownListFor(m => m.WeekDays)
+                </td>
+                <td>
+                    @Html.RadioButtonFor(m => m.Language, "English", false)@Html.Label("English")
+                    @Html.RadioButtonFor(m => m.Language, "Non-English", false)@Html.Label("Non-English")
+                </td>
+                <td>
+                    @*@Html.DropDownListFor(m => m.StatesData, new SelectList(Model.StatesData, "Id", "StateName"), new { @id = "ddlstate", @style = "width:200px", @onchange = "javascript:GetCity(this.value);" })
+        <br />
+        <br />
+        <select id="ddlcity" name="ddlcity" style="width:200px"></select>*@
+
+                    @Html.DropDownListFor(m => m.StatesData, new SelectList(Model.StatesData, "Id", "StateName"), new { @id = "ddlstate", @style = "width:200px;", @onchange = "javascript:GetCity(this.value);" })
+                    <br />
+                    <br />
+                    <select id="ddlcity" name="ddlcity" style="width: 200px">
+                    </select>
+
+                </td>
+            </tr>
+            <tr>
+                <td> <input type="submit" name="Create" value="Submit" /></td>
+            </tr>
+        </table>
+    }
+
+
+
+</div>
