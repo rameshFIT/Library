@@ -1,73 +1,80 @@
 ﻿@model Library.Data.Model.Book
-<div>
-    This is a Book Name Submit Form.
-</div>
+
+
 <script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
-<script language="javascript"  type="text/javascript">
+<script language="javascript" type="text/javascript">
     function GetCity(_stateid) {
         var processMessage = "<option value='0'> ...Please wait...  </option>";
-            $("#ddlcity").html(processMessage).show();
-            var url = "/Book/GetCityByState/";
+        $("#ddlcity").html(processMessage).show();
+        var url = "/Book/GetCityByState/";
 
-            $.ajax({
-                url: url,
-                data: { stateid: _stateid },
-                cache: false,
-                type: "POST",
-                success: function (data) {
-                    var markup = "<option value='0'> --Select City-- </option>";
-                    for (var i = 0; i < data.length; i++) {
-                        markup += "<option value="+ data[i].value + ">" + data[i].Text + "</option>"
-                    }
-                    $("#ddlcity").html(markup).show();
-                },
-                error: function (response) {
-                    alert("error:" + response );
+        $.ajax({
+            url: url,
+            data: { stateid: _stateid },
+            cache: false,
+            type: "POST",
+            success: function (data) {
+                var markup = "<option value='0'> --Select City-- </option>";
+                for (var i = 0; i < data.length; i++) {
+                    markup += "<option value=" + data[i].value + ">" + data[i].Text + "</option>"
                 }
-            });
-        }
-
-    </script>
-
-<div>
-    @using (Html.BeginForm())
-    {
-        @Html.AntiForgeryToken() <table>
-            <tr>
-                <td>
-                    @Html.LabelFor(m => m.Name, "Enter your name:")
-
-                </td>
-                <td>
-                    @Html.TextBoxFor(m => m.Name)
-                </td>
-                <td>
-                    @Html.EnumDropDownListFor(m => m.WeekDays)
-                </td>
-                <td>
-                    @Html.RadioButtonFor(m => m.Language, "English", false)@Html.Label("English")
-                    @Html.RadioButtonFor(m => m.Language, "Non-English", false)@Html.Label("Non-English")
-                </td>
-                <td>
-                    @*@Html.DropDownListFor(m => m.StatesData, new SelectList(Model.StatesData, "Id", "StateName"), new { @id = "ddlstate", @style = "width:200px", @onchange = "javascript:GetCity(this.value);" })
-        <br />
-        <br />
-        <select id="ddlcity" name="ddlcity" style="width:200px"></select>*@
-
-                    @Html.DropDownListFor(m => m.StatesData, new SelectList(Model.StatesData, "Id", "StateName"), new { @id = "ddlstate", @style = "width:200px;", @onchange = "javascript:GetCity(this.value);" })
-                    <br />
-                    <br />
-                    <select id="ddlcity" name="ddlcity" style="width: 200px">
-                    </select>
-
-                </td>
-            </tr>
-            <tr>
-                <td> <input type="submit" name="Create" value="Submit" /></td>
-            </tr>
-        </table>
+                $("#ddlcity").html(markup).show();
+            },
+            error: function (response) {
+                alert("error:" + response);
+            }
+        });
     }
 
+</script>
 
 
-</div>
+@using (Html.BeginForm())
+{
+<form>
+    <div class="form-group">
+        @Html.LabelFor(m => m.Name)
+        @Html.TextBoxFor(m => m.Name, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m=>m.Name)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.WeekDays)
+        @Html.EnumDropDownListFor(m => m.WeekDays, new { @class = "form-control" })
+        @Html.ValidationMessageFor(m => m.WeekDays)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Language)
+        @Html.RadioButtonFor(m => m.Language, "English", new { @class = "form-control" })@Html.Label("English")
+        @Html.RadioButtonFor(m => m.Language, "Non-English", new { @class = "form-control" })@Html.Label("Non-English")
+        @Html.ValidationMessageFor(m => m.Language)
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.State)
+        @Html.DropDownListFor(m => m.StateID, new SelectList(Model.States, "Id", "StateName","--Please Select--"), new { @class = "form-control", @id = "ddlstate", @style = "width:200px;", @onchange = "javascript:GetCity(this.value);" })
+        @Html.ValidationMessageFor(m => m.StateID)
+        <br />
+        <br />
+        @Html.LabelFor(m => m.City)
+        @Html.DropDownListFor(m => m.CityID, new SelectList(Model.Cities, "Id", "CityName"), new { @class = "form-control", @id = "ddlcity", @style = "width:200px;" })
+        @Html.ValidationMessageFor(m => m.CityID)
+        @*<select id="ddlcity" name="ddlcity" style="width: 200px" class="form-control">
+            @Html.ValidationMessageFor(m => m.City)
+        </select>*@
+
+    </div>
+
+    <div class="form-group">
+        <button type="submit" name="Create" class="btn btn-primary"> Submit </button>
+    </div>
+</form>
+        }
+
+
+
+
+
+
+

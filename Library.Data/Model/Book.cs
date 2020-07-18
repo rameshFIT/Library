@@ -11,12 +11,32 @@ namespace Library.Data.Model
     public class Book
     {
         public int Id { get; set; }
+
+        [Required]
         public string Name { get; set; }
+
+        [Required]
         public WeekDaysList WeekDays { get; set; }
+
+        [Required]
         public string Language { get; set; }
 
-        public List<State> StatesData { get; set; }
-        public SelectList CityData { get; set; }
+       
+        public List<State> States { get; set; }
+
+        
+        public List<City> Cities { get; set; }
+
+        [Required]
+        public string StateID { get; set; }
+
+        [Required]
+        public string CityID { get; set; }
+
+        public string State { get; set; }
+
+        public string City { get; set; }
+        //public SelectList Cities { get; set; }
     }
 
     public enum WeekDaysList

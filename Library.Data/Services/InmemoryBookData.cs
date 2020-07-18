@@ -34,8 +34,8 @@ namespace Library.Data.Services
         {
             books = new List<Book>()
             {
-                new Book {Id = 123, Name = "C# Basics", WeekDays = WeekDaysList.Friday, Language = "English"},
-                new Book {Id = 125, Name = "C# Introduction", WeekDays = WeekDaysList.Tuesday, Language = "Non-English"}
+                new Book {Id = 123, Name = "C# Basics", WeekDays = WeekDaysList.Friday, Language = "English", State="Virginia", City="Falls Church"},
+                new Book {Id = 125, Name = "C# Introduction", WeekDays = WeekDaysList.Tuesday, Language = "Non-English", State="Maryland", City="Rockville"}
             };
         }
         

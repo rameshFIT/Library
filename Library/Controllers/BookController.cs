@@ -21,14 +21,32 @@ namespace Library.Controllers
         public BookController()
         {
             BookDB = new InmemoryBookData();
-        }     
+        }
 
-        
         [HttpPost]
         public ActionResult Create(Book objBook)
         {
-            var books = BookDB.AddBook(objBook);
-            return View("Index", books);
+            int stateid = 1;
+            if (TempData["StateId"] != null)
+            {
+                stateid = (int)TempData["StateId"];
+            }
+
+            if (!ModelState.IsValid)
+            {
+                objBook.States = GetAllStates();
+                objBook.Cities = GetAllCities().Where(c => c.StateId == stateid).ToList();
+                return View("Create", objBook);
+            }
+
+            //var selectedItem = objBook.Cities.Find(p => p.CityName == objBook.CityID.ToString());
+            objBook.State = GetAllStates().Where(m => m.Id == stateid).FirstOrDefault().StateName;
+            var cModel = GetAllCities().Where(m => m.StateId == stateid);
+            SelectList obgcity = new SelectList(cModel, "Id", "CityName",0);
+
+            //var stateName = TempData["selectedStateName"];
+            var model = BookDB.AddBook(objBook);
+            return View("Index", model);
         }
 
         [HttpPost]
@@ -36,23 +54,18 @@ namespace Library.Controllers
         {
             var model = GetAllCities().Where(m => m.StateId == stateid);
             //SelectList obgcity = new SelectList(model, "Id", "CityName",0);--why this 0 at end?
-            SelectList obgcity = new SelectList(model, "Id", "CityName");
-            return Json(obgcity);
-        }
+            SelectList obgcity = new SelectList(model, "Id", "CityName",0);
+            TempData["StateId"] = stateid;
+            return Json(obgcity /*, JsonRequestBehavior.AllowGet */);
+        }        
 
         [HttpGet]
         public ActionResult Create()
         {
             var model = new Book();
-            //rModel.StatesData = new List<State>();
-            model.StatesData = GetAllStates();
+            model.States = GetAllStates();
+            model.Cities = GetAllCities().Where(c=>c.StateId == 1).ToList();
             return View("Create", model);
-
-
-            //Book objcountrymodel = new Book();
-            //objcountrymodel.StatesData = new List<State>();
-            //objcountrymodel.StatesData = GetAllStates();
-            //return View(objcountrymodel);
         }
 
         public List<State> GetAllStates()
