@@ -24,6 +24,7 @@ namespace Library.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Create(Book objBook)
         {
             int stateid = 1;
