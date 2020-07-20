@@ -22,10 +22,10 @@ namespace Library.Data.Model
         public string Language { get; set; }
 
        
-        public List<State> States { get; set; }
+        public IList<State> States { get; set; }
 
         
-        public List<City> Cities { get; set; }
+        public IList<City> Cities { get; set; }
 
         [Required]
         public string StateID { get; set; }

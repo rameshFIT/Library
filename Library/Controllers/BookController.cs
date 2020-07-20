@@ -5,22 +5,37 @@ using System.Web;
 using System.Web.Mvc;
 using Library.Data.Model;
 using Library.Data.Services;
+using Library.ViewModels;
 
 namespace Library.Controllers
 {
     public class BookController : Controller
     {
         IBookData BookDB;
+
         // GET: Book
         public ActionResult Index()
         {
             var model = BookDB.GetBooks();
-            return View(model);
+            var bookViewModel = CreateListBookViewmodel(model);
+            return View(bookViewModel);
+        }
+
+        private IEnumerable<BookViewModel> CreateListBookViewmodel(IEnumerable<Book> model)
+        {
+            var bookViewModel = new List<BookViewModel>();
+            foreach (var item in model)
+            {
+                BookViewModel bookVM = item;
+                bookViewModel.Add(bookVM);
+            }
+            return bookViewModel;
         }
 
         public BookController()
         {
             BookDB = new InmemoryBookData();
+            
         }
 
         [HttpPost]
@@ -37,7 +52,8 @@ namespace Library.Controllers
             {
                 objBook.States = GetAllStates();
                 objBook.Cities = GetAllCities().Where(c => c.StateId == stateid).ToList();
-                return View("Create", objBook);
+                BookViewModel bookViewModel = objBook;
+                return View("Create", bookViewModel);
             }
 
             //var selectedItem = objBook.Cities.Find(p => p.CityName == objBook.CityID.ToString());
@@ -47,7 +63,8 @@ namespace Library.Controllers
 
             //var stateName = TempData["selectedStateName"];
             var model = BookDB.AddBook(objBook);
-            return View("Index", model);
+            var bookVModel = CreateListBookViewmodel(model);
+            return View("Index", bookVModel);
         }
 
         [HttpPost]
@@ -56,6 +73,7 @@ namespace Library.Controllers
             var model = GetAllCities().Where(m => m.StateId == stateid);
             //SelectList obgcity = new SelectList(model, "Id", "CityName",0);--why this 0 at end?
             SelectList obgcity = new SelectList(model, "Id", "CityName",0);
+            
             TempData["StateId"] = stateid;
             return Json(obgcity /*, JsonRequestBehavior.AllowGet */);
         }        
@@ -66,7 +84,8 @@ namespace Library.Controllers
             var model = new Book();
             model.States = GetAllStates();
             model.Cities = GetAllCities().Where(c=>c.StateId == 1).ToList();
-            return View("Create", model);
+            BookViewModel bookViewModel = model;
+            return View("Create", bookViewModel);
         }
 
         public List<State> GetAllStates()

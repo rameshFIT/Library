@@ -1,4 +1,5 @@
-﻿@model IEnumerable<Library.Data.Model.Book>
+﻿@*@model IEnumerable<Library.Data.Model.Book>*@
+@model IEnumerable<Library.ViewModels.BookViewModel>
 
     <div>
         @(Html
@@ -8,9 +9,8 @@
         columns.Add(model => model.Name).Titled("Name");
         columns.Add(model => model.Language).Titled("Language");
         columns.Add(model => model.WeekDays).Titled("Week day");
-        columns.Add(model => model.Id).Titled("ID");
-        columns.Add(model => model.State).Titled("State");
-        columns.Add(model => model.City).Titled("City");
+        columns.Add(model => model.StateName).Titled("State");
+        columns.Add(model => model.CityName).Titled("City");
     })
     .Empty("No data found")
     .Filterable()
