@@ -12,6 +12,8 @@ namespace Library.Controllers
     public class BookController : Controller
     {
         IBookData BookDB;
+        //LibraryDBContext bookDBContext;
+        SQLBookData objSQLData;
 
         // GET: Book
         public ActionResult Index()
@@ -32,10 +34,10 @@ namespace Library.Controllers
             return bookViewModel;
         }
 
-        public BookController()
+        public BookController(IBookData BookDB)
         {
             BookDB = new InmemoryBookData();
-            
+            //objSQLData = new SQLBookData();
         }
 
         [HttpPost]
