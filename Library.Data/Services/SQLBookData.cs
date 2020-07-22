@@ -15,7 +15,7 @@ namespace Library.Data.Services
         {
             bookDBContext.BookDbSet.Add(objBook);
             bookDBContext.SaveChanges();
-            return new  List<Book>();
+            return GetBooks();
         }
 
         public SQLBookData(LibraryDBContext bookDBContext)
@@ -30,7 +30,10 @@ namespace Library.Data.Services
 
         public IEnumerable<Book> GetBooks()
         {
-            throw new NotImplementedException();
+            return from r in bookDBContext.BookDbSet
+                   //why below creating issue?
+                   //orderby r.Name
+                   select r;
         }
     }
 }

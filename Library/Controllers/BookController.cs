@@ -12,8 +12,8 @@ namespace Library.Controllers
     public class BookController : Controller
     {
         IBookData BookDB;
-        //LibraryDBContext bookDBContext;
-        SQLBookData objSQLData;
+        LibraryDBContext bookDBContext;
+        //SQLBookData objSQLData;
 
         // GET: Book
         public ActionResult Index()
@@ -26,6 +26,7 @@ namespace Library.Controllers
         private IEnumerable<BookViewModel> CreateListBookViewmodel(IEnumerable<Book> model)
         {
             var bookViewModel = new List<BookViewModel>();
+            if( model != null && model.Count() > 0)
             foreach (var item in model)
             {
                 BookViewModel bookVM = item;
@@ -34,10 +35,11 @@ namespace Library.Controllers
             return bookViewModel;
         }
 
-        public BookController(IBookData BookDB)
-        {
-            BookDB = new InmemoryBookData();
-            //objSQLData = new SQLBookData();
+        public BookController()
+        {            
+            bookDBContext = new LibraryDBContext();
+            BookDB = new SQLBookData(bookDBContext);
+            //objSQLData = new SQLBookData(bookDBContext);
         }
 
         [HttpPost]
@@ -53,7 +55,7 @@ namespace Library.Controllers
             if (!ModelState.IsValid)
             {
                 objBook.States = GetAllStates();
-                objBook.Cities = GetAllCities().Where(c => c.StateId == stateid).ToList();
+                objBook.Cities = GetAllCities().Where(c => c.StateId == stateid).ToList();                
                 BookViewModel bookViewModel = objBook;
                 return View("Create", bookViewModel);
             }
@@ -62,7 +64,7 @@ namespace Library.Controllers
             objBook.State = GetAllStates().Where(m => m.Id == stateid).FirstOrDefault().StateName;
             var cModel = GetAllCities().Where(m => m.StateId == stateid);
             SelectList obgcity = new SelectList(cModel, "Id", "CityName",0);
-
+            objBook.PublishedDateTime = DateTime.Today;
             //var stateName = TempData["selectedStateName"];
             var model = BookDB.AddBook(objBook);
             var bookVModel = CreateListBookViewmodel(model);

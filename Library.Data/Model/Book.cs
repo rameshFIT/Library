@@ -20,10 +20,8 @@ namespace Library.Data.Model
 
         [Required]
         public string Language { get; set; }
-
        
         public IList<State> States { get; set; }
-
         
         public IList<City> Cities { get; set; }
 
@@ -38,7 +36,7 @@ namespace Library.Data.Model
         public string City { get; set; }
         //public SelectList Cities { get; set; }
 
-        public DateTime PublishedDateTime { get; set; }
+        public DateTime? PublishedDateTime { get; set; }
     }
     
     public enum WeekDaysList
