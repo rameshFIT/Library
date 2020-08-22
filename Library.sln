@@ -7,6 +7,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Web", "Library\Libr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Library.Data", "Library.Data\Library.Data.csproj", "{B0897C10-89BF-40EF-816F-4DB53FC870EB}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Database", "Database", "{ACC2FE7E-7809-4C39-B3A8-CD301147C3F4}"
+	ProjectSection(SolutionItems) = preProject
+		..\..\..\..\OneDrive\Desktop\Ramesh\Job Hunt\Ramesh Core Hunt Begins Here\Practical or Coding Practise\SQL Scripts\Libray Books Table Scheme.sql = ..\..\..\..\OneDrive\Desktop\Ramesh\Job Hunt\Ramesh Core Hunt Begins Here\Practical or Coding Practise\SQL Scripts\Libray Books Table Scheme.sql
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
